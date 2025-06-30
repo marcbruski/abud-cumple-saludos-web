@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Mic, MicOff, Play, Pause, Edit2, Trash2, Heart, Star } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import Confetti from "@/components/Confetti";
 
 interface Greeting {
   id: string;
@@ -26,6 +26,7 @@ const Index = () => {
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
   const [recordingTime, setRecordingTime] = useState(0);
   const [playingAudio, setPlayingAudio] = useState<string | null>(null);
+  const [showConfetti, setShowConfetti] = useState(false);
   
   const audioRef = useRef<HTMLAudioElement>(null);
   const recordingIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -132,6 +133,10 @@ const Index = () => {
     setAudioUrl(null);
     setRecordingTime(0);
     
+    // Activar el efecto de confetti
+    setShowConfetti(true);
+    setTimeout(() => setShowConfetti(false), 5000);
+    
     toast({
       title: "¡Saludo agregado!",
       description: "Tu mensaje para Ernesto ha sido guardado exitosamente",
@@ -161,6 +166,8 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-yellow-50 to-blue-100 p-4">
+      <Confetti isActive={showConfetti} duration={5000} />
+      
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8 bg-gradient-to-r from-blue-600 to-yellow-500 text-white p-8 rounded-2xl shadow-2xl">
